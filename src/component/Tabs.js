@@ -8,6 +8,7 @@ import Box from '@material-ui/core/Box';
 import {makeStyles} from "@material-ui/styles";
 import TemplatesPage from "./TemplatesPage";
 import NewTemplatePage from "./NewTemplatePage";
+import TemplatesPageContainer from "./TemplatesPageContainer";
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -72,7 +73,7 @@ const SimpleTabs = () => {
                 </Tabs>
             </AppBar>
             <TabPanel value={value} index={0}>
-               <TemplatesPage />
+               <TemplatesPageContainer />
             </TabPanel>
             <TabPanel value={value} index={1}>
                 <NewTemplatePage />

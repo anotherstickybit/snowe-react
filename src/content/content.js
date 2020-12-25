@@ -1,6 +1,7 @@
 /* global chrome */
 
 chrome.runtime.onMessage.addListener(gotMessage);
+
 function gotMessage(message, sender, sendResponse) {
     if (message.type === 'suspend') {
         document.getElementById('gsft_main').contentWindow.document.getElementById('activity-stream-comments-textarea').value = message.message
@@ -11,14 +12,19 @@ function gotMessage(message, sender, sendResponse) {
 }
 
 let oldHref = document.location.href;
-window.onload = function() {
+window.onload = function () {
     let bodyList = document.querySelector("body")
-        ,observer = new MutationObserver(function(mutations) {
-        mutations.forEach(function(mutation) {
-            if (oldHref !== document.location.href) {
-                oldHref = document.location.href;
-                setTimeout(function() { incidentAndTask(); }, 1000);
-            }
+        , observer = new MutationObserver(function (mutations) {
+        mutations.forEach(function (mutation) {
+            setTimeout(function () {
+                if (oldHref !== document.location.href) {
+                    oldHref = document.location.href;
+                    if (document.location.href.includes("change_task")) {
+                        incidentAndTask();
+                    }
+                }
+            }, 1000)
+
         });
     });
     let config = {
