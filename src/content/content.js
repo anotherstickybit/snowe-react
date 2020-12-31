@@ -44,12 +44,12 @@ function incidentAndTask() {
             let timeWorkedMins = document.getElementById('gsft_main').contentWindow.document.querySelector('[id^="otmr"][id$="min"]');
             let minutes = timeWorkedMins.innerHTML;
             timeWorkedMins.addEventListener('DOMSubtreeModified', () => {
-                if (timeWorkedMins.innerHTML % 15 === 0 || timeWorkedMins.innerHTML === minutes) {
+                if (timeWorkedMins.innerHTML % 5 === 0 || timeWorkedMins.innerHTML === minutes) {
                     saveButton.disabled = false;
                     updateButton.disabled = false;
                     timeWorkedMins.style.backgroundColor = "";
                 }
-                if (timeWorkedMins.innerHTML % 15 !== 0) {
+                if (timeWorkedMins.innerHTML % 5 !== 0) {
                     saveButton.disabled = true;
                     updateButton.disabled = true;
                     timeWorkedMins.style.backgroundColor = "red";

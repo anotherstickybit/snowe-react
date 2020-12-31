@@ -2,6 +2,7 @@
 import React from "react";
 import {Button, FormControlLabel, Radio, RadioGroup, TextareaAutosize, TextField, Typography} from "@material-ui/core";
 import {makeStyles} from "@material-ui/styles";
+import { SnackbarProvider, useSnackbar } from 'notistack';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -18,37 +19,44 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const saveTemplate = () => {
-    let name = document.getElementById("name").value
-    let commentText = document.getElementById("commentText").value
-    let suspendCheck = document.getElementById("suspend")
-    let closeCheck = document.getElementById("close")
-    if (name === "" || commentText === "") {
-        alert("One of fields is empty")
-        return
-    }
-    if (suspendCheck.checked) {
-        name += "-suspend"
-        chrome.storage.local.set({[name]: commentText})
-    }
-    if (closeCheck.checked) {
-        name += "---close"
-        chrome.storage.local.set({[name]: commentText})
-    }
-}
-
-const clearUserTemplates = () => {
-    chrome.storage.local.clear()
-}
-
 const NewTemplatePage = () => {
     const classes = useStyles();
+    const { enqueueSnackbar } = useSnackbar();
 
     const [value, setValue] = React.useState('suspend');
 
     const handleChange = (event) => {
         setValue(event.target.value);
     };
+
+    const saveTemplate = () => {
+        let name = document.getElementById("name").value
+        let commentText = document.getElementById("commentText").value
+        let suspendCheck = document.getElementById("suspend")
+        let closeCheck = document.getElementById("close")
+        let variant = 'success'
+        if (name === "" || commentText === "") {
+            let variant = 'error'
+            enqueueSnackbar('One of fields is empty.', { variant });
+            return
+        }
+        if (suspendCheck.checked) {
+            name += "-suspend"
+            chrome.storage.local.set({[name]: commentText})
+            enqueueSnackbar('Template saved!', { variant });
+        }
+        if (closeCheck.checked) {
+            name += "---close"
+            chrome.storage.local.set({[name]: commentText})
+            enqueueSnackbar('Template saved!', { variant });
+        }
+    }
+
+    const clearUserTemplates = () => {
+        chrome.storage.local.clear()
+        let variant = 'info'
+        enqueueSnackbar('All your templates removed.', { variant });
+    }
 
     return (
         <div className={classes.content}>
